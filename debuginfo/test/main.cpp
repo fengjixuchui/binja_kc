@@ -26,6 +26,7 @@
 
 #include <binja/debuginfo/plugin_dsym.h>
 #include <binja/debuginfo/plugin_macho.h>
+#include <binja/debuginfo/plugin_symtab.h>
 #include <binja/kcview/lib.h>
 #include <binja/utils/binary_view.h>
 
@@ -46,6 +47,7 @@ int main(int argc, const char **argv) {
     BN::InitPlugins(true);
     DebugInfo::PluginDSYM::RegisterPlugin();
     DebugInfo::PluginMacho::RegisterPlugin();
+    DebugInfo::PluginSymtab::RegisterPlugin();
     KCView::CorePluginInit();
 
     BNLogToStdout(BNLogLevel::InfoLog);

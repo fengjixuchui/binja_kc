@@ -19,27 +19,18 @@
 // SOFTWARE.
 
 
-#pragma once
+#include <cxxabi.h>
 
-#include <binja/macho/macho.h>
-#include <binja/utils/interval_map.h>
+#include "utils/demangle.h"
 
-namespace Binja::DebugInfo {
+std::string Binja::Utils::Demangle(const std::string& name) {
+    int status = 0;
+    char* ret = abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status);
+    if (status) {
+        return name;
+    }
 
-class AddressSlider {
-private:
-    using Interval = Utils::Interval<uint64_t>;
-
-public:
-    void Map(Interval from, Interval to);
-    std::optional<uint64_t> SlideAddress(uint64_t address);
-
-    static AddressSlider CreateFromMachOSegments(const std::vector<MachO::Segment> &from,
-                                                 const std::vector<MachO::Segment> &to);
-
-private:
-    Utils::IntervalMap<uint64_t, uint64_t> s1map_;
-    Utils::IntervalMap<uint64_t, uint64_t> s2map_;
-};
-
-}// namespace Binja::DebugInfo
+    std::string result{ret};
+    free(ret);
+    return result;
+}

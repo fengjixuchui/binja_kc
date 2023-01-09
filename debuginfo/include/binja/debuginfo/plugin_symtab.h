@@ -21,25 +21,16 @@
 
 #pragma once
 
-#include <binja/macho/macho.h>
-#include <binja/utils/interval_map.h>
+#include <binaryninjaapi.h>
 
 namespace Binja::DebugInfo {
 
-class AddressSlider {
-private:
-    using Interval = Utils::Interval<uint64_t>;
+class PluginSymtab {
+public:
+    static constexpr auto kPluginName = "macho_kc_symtab_debug_info";
 
 public:
-    void Map(Interval from, Interval to);
-    std::optional<uint64_t> SlideAddress(uint64_t address);
-
-    static AddressSlider CreateFromMachOSegments(const std::vector<MachO::Segment> &from,
-                                                 const std::vector<MachO::Segment> &to);
-
-private:
-    Utils::IntervalMap<uint64_t, uint64_t> s1map_;
-    Utils::IntervalMap<uint64_t, uint64_t> s2map_;
+    static void RegisterPlugin();
 };
 
 }// namespace Binja::DebugInfo

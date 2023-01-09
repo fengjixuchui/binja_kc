@@ -21,25 +21,10 @@
 
 #pragma once
 
-#include <binja/macho/macho.h>
-#include <binja/utils/interval_map.h>
+#include <string>
 
-namespace Binja::DebugInfo {
+namespace Binja::Utils {
 
-class AddressSlider {
-private:
-    using Interval = Utils::Interval<uint64_t>;
+std::string Demangle(const std::string &name);
 
-public:
-    void Map(Interval from, Interval to);
-    std::optional<uint64_t> SlideAddress(uint64_t address);
-
-    static AddressSlider CreateFromMachOSegments(const std::vector<MachO::Segment> &from,
-                                                 const std::vector<MachO::Segment> &to);
-
-private:
-    Utils::IntervalMap<uint64_t, uint64_t> s1map_;
-    Utils::IntervalMap<uint64_t, uint64_t> s2map_;
-};
-
-}// namespace Binja::DebugInfo
+}
